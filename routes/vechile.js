@@ -4,6 +4,7 @@ const Vechile = require('../models/vechile')
 const router = new express.Router()
 const addVechileSchema = require('../middleware/Joi-Schemas/Vechile')
 const Repair = require('../models/repair')
+const Tire = require('../models/tire')
 
 router.post('/vechile',auth,async(req,res)=>{
     try {
@@ -93,6 +94,19 @@ router.get('/vechiles/repair/:id',auth,async (req,res)=>{
         return res.status(400).send({error : 'NO repairs found'})
     }
     res.send(repair)
+})
+
+router.get('/vechiles/tire/:id',auth,async (req,res)=>{
+    const vechileid = req.params.id
+    const vechile = await Vechile.findOne({_id : vechileid,owner : req.user._id})
+        if (!vechile) {
+            return res.status(400).send({error : 'The vechile is not associated with this user'})
+        }
+    const tire = await Tire.find({vechileid : vechileid})
+    if (!tire) {
+        return res.status(400).send({error : 'NO repairs found'})
+    }
+    res.send(tire)
 })
 
 module.exports = router
