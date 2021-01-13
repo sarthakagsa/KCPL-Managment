@@ -32,7 +32,7 @@ router.get('/vechiles/:id',auth,async(req,res)=>{
         }
     res.send(vechile)
     } catch (e) {
-        res.status(500).send()   
+        res.status(500).send(e)   
     }
 })
 

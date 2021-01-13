@@ -61,7 +61,7 @@ router.patch('/tire/:vechileid/:tireid',auth,async(req,res)=>{
     }
 })
 
-router.get('/tire/:tireid',async (req,res)=>{
+router.get('/tire/:tireid',auth,async (req,res)=>{
     const tire = await Tire.findOne({_id: req.params.tireid})
     if (!tire) {
         return res.send({error: ' No such file found'})
@@ -69,7 +69,7 @@ router.get('/tire/:tireid',async (req,res)=>{
     res.send(tire)
 })
 
-router.delete('/tire/:tireid',async (req,res)=>{
+router.delete('/tire/:tireid',auth,async (req,res)=>{
     const tire = await Tire.findOne({_id: req.params.tireid})
     if (!tire) {
         return res.send({error: ' No such file found'})

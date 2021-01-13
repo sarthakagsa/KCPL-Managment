@@ -61,7 +61,7 @@ router.patch('/repair/:vechileid/:repairid',auth,async(req,res)=>{
     }
 })
 
-router.get('/repair/:repairid',async (req,res)=>{
+router.get('/repair/:repairid',auth,async (req,res)=>{
     const repair = await Repair.findOne({_id: req.params.repairid})
     if (!repair) {
         return res.send({error: ' No such file found'})
@@ -69,7 +69,7 @@ router.get('/repair/:repairid',async (req,res)=>{
     res.send(repair)
 })
 
-router.delete('/repair/:repairid',async (req,res)=>{
+router.delete('/repair/:repairid',auth,async (req,res)=>{
     const repair = await Repair.findOne({_id: req.params.repairid})
     if (!repair) {
         return res.send({error: ' No such file found'})
