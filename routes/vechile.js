@@ -24,13 +24,11 @@ router.post('/vechile',auth,async(req,res)=>{
 router.get('/vechiles/:id',auth,async(req,res)=>{
     const _id = req.params.id
     try {
-    //    const task = await Task.findById(_id)
-
        const vechile = await Vechile.findOne({ _id , owner : req.user._id})
        if(!vechile){
         return res.status(404).send({error:'No vechile Found'})
         }
-    res.send(vechile)
+        res.send(vechile)
     } catch (e) {
         res.status(500).send(e)   
     }

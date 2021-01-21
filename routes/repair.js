@@ -1,10 +1,8 @@
 const auth = require('../middleware/auth')
 const express = require('express')
 const router = new express.Router()
-const User = require('../models/user')
 const Vechile = require('../models/vechile')
 const Repair = require('../models/repair')
-const { Router } = require('express')
 
 router.post('/repair/:id',auth,async(req,res)=>{
     const vechile_id = req.params.id
@@ -35,7 +33,7 @@ router.patch('/repair/:vechileid/:repairid',auth,async(req,res)=>{
     }
     req.body.parts.forEach(element => {
         const partsUpdates = Object.keys(element)
-        const partsAllowedUpdates = ['partname','cost','quantity','hsn']
+        const partsAllowedUpdates = ['partname','cost','quantity','hsn','gst']
         const isValidOperation = partsUpdates.every((update)=>partsAllowedUpdates.includes(update))
         if (!isValidOperation) {
             return res.status(400).send({ error: 'Invalid Updates!'})       

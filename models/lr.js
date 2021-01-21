@@ -5,10 +5,11 @@ const lrSchema = new mongoose.Schema({
     date : {
         type : String,
         validate(value){
-            if (!validator.isDate(value,{format: 'DD-MM-YYYY'})) {
+            if (!validator.isDate(value,{format: 'YYYY-MM-DD'})) {
                 throw new Error('Date is invalid')
             }
-        }
+        },
+        required : true
     },
     origin : {
         type : String,
@@ -16,7 +17,8 @@ const lrSchema = new mongoose.Schema({
     },
     lrnumber : {
         type : Number,
-        required : true
+        required : true,
+        unique : true
     },
     partyname : {
         type : String,
@@ -35,8 +37,7 @@ const lrSchema = new mongoose.Schema({
         required : true
     },
     loadingcharges : {
-        type : Number,
-        required : true
+        type : Number
     },
     unloadingcharges : {
         type : Number
@@ -67,6 +68,10 @@ const lrSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true,
         ref : 'Consignor'
+    },
+    billed : {
+        type : Boolean,
+        default : false
     }
     // consigneeid : {
     //     type : mongoose.Schema.Types.ObjectId,

@@ -98,8 +98,22 @@ router.delete('/lr/:lrid',auth,async (req,res)=>{
 //Get All LRS
 router.get('/lr/:vechileid/:consignorid',auth,async (req,res)=>{
     try {
-        const lr = await Lr.find({vechileid: req.params.vechileid,consignorid : req.params.consignorid})
-        if (!lr) {
+        if (!req.body.vechileid) {
+            const lr = await Lr.find({consignorid : req.body.consignorid,billed : false})
+            if (!lr[0]) {
+                return res.status(400).send('No Lrs to be billed for th given option')
+            }
+            return res.send({lr : lr})
+        }
+        if (!req.body.consignorid) {
+            const lr = await Lr.find({vechileid : req.body.vechileid,billed : false})
+            if (!lr[0]) {
+                return res.status(400).send('No Lrs to be billed for th given option')
+            }
+            return res.send({lr : lr})
+        }
+        const lr = await Lr.find({vechileid: req.params.vechileid,consignorid : req.params.consignorid,billed : false})
+        if (!lr[0]) {
             return res.send({error: ' No such file found'})
         }
         const workbook = new ExcelJs.Workbook();
@@ -123,6 +137,8 @@ router.get('/lr/:vechileid/:consignorid',auth,async (req,res)=>{
             lr.s_no = count;
             worksheet.addRow(lr);
             count += 1;
+            // lr.billed = true
+            // lr.save()
         });
         worksheet.getRow(1).eachCell((cell) => {
             cell.font = {bold: true};
